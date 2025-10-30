@@ -1,243 +1,264 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محرر دعوة الزواج</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مولد بطاقة دعوة زواج</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+  <!-- Google Fonts (Arabic) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- html2canvas for export -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <style>
+    body { background:#f2f2f2; font-family: 'Cairo', sans-serif; padding:20px; }
+    .card-preview {
+      width: 480px;
+      max-width: 90vw;
+      height: 760px;
+      margin: 0 auto;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      background-size: cover;
+      background-position: center;
+      background-color: #222;
+      color: #e6d3b8;
+      direction: rtl;
+    }
+
+    /* gold-ish text style */
+    .inv-text { color: #e6d3b8; text-shadow: 0 1px 0 rgba(255,255,255,0.02), 0 6px 18px rgba(0,0,0,0.6); }
+    .inv-name { font-family: 'Amiri', serif; font-size: 44px; font-weight: 700; letter-spacing: 1px; margin: 6px 0; }
+    .inv-title { font-size: 18px; opacity: 0.95; margin-bottom: 8px; }
+    .inv-body { font-size: 16px; opacity: 0.95; margin-top: 14px; }
+    .inv-meta { font-size: 14px; opacity: 0.95; margin-top: 18px; }
+
+    .ornament {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      opacity: 0.85;
+      fill: none;
+      stroke: #c9b08a;
+      stroke-width: 1.2;
+    }
+    .top-left { left: 18px; top: 12px; transform: rotate(0deg) scale(1.05); }
+    .top-right { right: 18px; top: 12px; transform: rotate(180deg) scale(1.05); }
+    .bottom-left { left: 18px; bottom: 12px; transform: rotate(-90deg) scale(1.05); }
+    .bottom-right { right: 18px; bottom: 12px; transform: rotate(90deg) scale(1.05); }
+
+    /* container for center content */
+    .center-block {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      text-align: center;
+      padding: 16px 28px;
+      width: calc(100% - 80px);
+      box-sizing: border-box;
+      backdrop-filter: none;
+    }
+
+    /* control panel */
+    .controls { max-width: 480px; margin: 0 auto 18px; }
+    label.small { font-size: 0.86rem; font-weight: 600; }
+
+    /* small responsive tweaks */
+    @media (max-width:540px){
+      .inv-name { font-size: 32px; }
+      .card-preview { height: 680px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- لوحة التحرير -->
-        <div class="editor-panel">
-            <h2>تخصيص دعوة الزواج</h2>
-            
-            <div class="form-group">
-                <label for="invitationTitle">عنوان الدعوة:</label>
-                <input type="text" id="invitationTitle" value="دعوة زواج" placeholder="مثال: دعوة زواج">
-            </div>
 
-            <div class="form-group">
-                <label for="brideName">اسم العروس:</label>
-                <input type="text" id="brideName" value="فاطمة" placeholder="اسم العروس">
-            </div>
+  <div class="container">
+    <h3 class="text-center mb-3">مولد بطاقة دعوة زواج</h3>
 
-            <div class="form-group">
-                <label for="groomName">اسم العريس:</label>
-                <input type="text" id="groomName" value="أحمد" placeholder="اسم العريس">
-            </div>
+    <div class="row gx-3">
+      <div class="col-md-5">
+        <div class="card p-3 controls">
+          <div class="mb-2">
+            <label class="form-label small">النص الأعلى (مثلاً: يسرنا دعوتكم)</label>
+            <input id="inputTitle" class="form-control" placeholder="بمناسبة زواج ابننا..." value="يتشرف">
+          </div>
 
-            <div class="form-group">
-                <label for="weddingDate">تاريخ الزفاف:</label>
-                <textarea id="weddingDate" rows="2" placeholder="مثال: الجمعة ١٥ ديسمبر ٢٠٢٤
-الساعة ٨:٠٠ مساءً">الجمعة ١٥ ديسمبر ٢٠٢٤
-الساعة ٨:٠٠ مساءً</textarea>
-            </div>
+          <div class="mb-2">
+            <label class="form-label small">اسم العريس / العروس</label>
+            <input id="inputName" class="form-control" placeholder="اسم" value="مطلو بن نايف الشقور">
+          </div>
 
-            <div class="form-group">
-                <label for="venueInfo">معلومات المكان:</label>
-                <textarea id="venueInfo" rows="3" placeholder="اسم القاعة، العنوان، الوقت">قاعة الأحلام الذهبية
-شارع الملك فهد - الرياض
-الساعة ٧:٠٠ مساءً</textarea>
-            </div>
+          <div class="mb-2">
+            <label class="form-label small">الموقع/القاعة</label>
+            <input id="inputPlace" class="form-control" placeholder="قاعة الفخامة" value="قاعة الفخامة – المجمعة">
+          </div>
 
-            <div class="form-group">
-                <label for="additionalText">نص إضافي:</label>
-                <textarea id="additionalText" rows="2" placeholder="رسالة خاصة أو معلومات إضافية">يشرفنا حضوركم لمشاركتنا هذه المناسبة السعيدة</textarea>
-            </div>
+          <div class="mb-2">
+            <label class="form-label small">التاريخ (هجري/ميلادي أو نص)</label>
+            <input id="inputDate" class="form-control" placeholder="١٤٤٦/٠٥/١٢ هـ / ٢٠٢٤/١١/١٤ م" value="١٤٤٦/٥/١٢ هـ - ١٤/١١/٢٠٢٤ م">
+          </div>
 
-            <div class="form-group">
-                <label for="cardOrientation">اتجاه البطاقة:</label>
-                <select id="cardOrientation">
-                    <option value="portrait">طولي (عادي)</option>
-                    <option value="landscape">عرضي</option>
-                    <option value="story">ستوري إنستغرام</option>
-                    <option value="square">مربع</option>
-                    <option value="postcard">بطاقة بريدية</option>
-                </select>
-            </div>
+          <div class="mb-2">
+            <label class="form-label small">الوقت</label>
+            <input id="inputTime" class="form-control" placeholder="مساءً" value="مساء يوم الخميس">
+          </div>
 
-            <div class="form-group">
-                <label for="backgroundType">نوع الخلفية:</label>
-                <select id="backgroundType">
-                    <option value="gradient">لون متدرج</option>
-                    <option value="image">صورة مخصصة</option>
-                </select>
-            </div>
+          <div class="mb-3">
+            <label class="form-label small">اختر صورة خلفية (اختياري)</label>
+            <input id="bgUpload" type="file" accept="image/*" class="form-control form-control-sm">
+            <div class="form-text">يمكنك تركها لوضع لون داكن افتراضي.</div>
+          </div>
 
-            <div class="form-group" id="colorGroup">
-                <label for="cardColor">لون الخلفية:</label>
-                <input type="color" id="cardColor" class="color-input" value="#f093fb">
-            </div>
+          <div class="mb-2">
+            <label class="form-label small">أو اختر لون خلفية</label>
+            <input id="bgColor" type="color" class="form-control form-control-color" value="#222222">
+          </div>
 
-            <div class="form-group" id="imageGroup" style="display: none;">
-                <label for="backgroundImage">صورة الخلفية:</label>
-                <input type="file" id="backgroundImage" accept="image/*">
-                <small style="color: #718096; margin-top: 5px; display: block;">اختر صورة للخلفية (JPG, PNG, GIF)</small>
-            </div>
+          <div class="d-flex gap-2 mt-3">
+            <button id="downloadBtn" class="btn btn-primary flex-grow-1">تحميل كصورة PNG</button>
+            <button id="resetBtn" class="btn btn-outline-secondary">إعادة تعيين</button>
+          </div>
 
-            <div class="form-group" id="overlayGroup" style="display: none;">
-                <label for="overlayOpacity">شفافية الطبقة العلوية:</label>
-                <input type="range" id="overlayOpacity" min="0" max="90" value="50" style="width: 100%;">
-                <small style="color: #718096;">لجعل النص أكثر وضوحاً على الصورة</small>
-            </div>
-
-            <div class="form-group">
-                <label for="fontFamily">نوع الخط:</label>
-                <select id="fontFamily">
-                    <optgroup label="✍️ خطوط الرقعة">
-                        <option value="Aref Ruqaa">عارف رقعة - رقعة كلاسيكي</option>
-                        <option value="Aref Ruqaa Ink">عارف رقعة حبري - رقعة بقلم حبر</option>
-                    </optgroup>
-                    
-                    <optgroup label="🎨 خطوط ديوانية وزخرفية">
-                        <option value="Rakkas">رقاص - ديواني زخرفي فاخر</option>
-                        <option value="Katibeh">كاتبة - ديواني راقي</option>
-                        <option value="Mirza">ميرزا - نستعليق ديواني</option>
-                    </optgroup>
-                    
-                    <optgroup label="📖 خطوط نسخ تقليدية">
-                        <option value="Scheherazade New">شهرزاد - نسخ ديواني</option>
-                        <option value="Amiri">أميري - نسخ تقليدي</option>
-                    </optgroup>
-                    
-                    <optgroup label="💎 خطوط كوفية">
-                        <option value="Reem Kufi">ريم كوفي - كوفي هندسي</option>
-                    </optgroup>
-                    
-                    <optgroup label="🌟 خطوط عصرية">
-                        <option value="Almarai">المرعي - عصري واضح</option>
-                        <option value="Cairo">القاهرة - حديث أنيق</option>
-                        <option value="Tajawal">تجوال - عصري</option>
-                        <option value="Mada">مدى - بسيط</option>
-                        <option value="Harmattan">هرماتان - نظيف</option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="textColor">لون النص:</label>
-                <input type="color" id="textColor" class="color-input" value="#ffffff">
-            </div>
-
-            <div class="form-group">
-                <label for="textStyle">نمط النص:</label>
-                <select id="textStyle">
-                    <option value="normal">عادي</option>
-                    <option value="gold">ذهبي فاخر ✨</option>
-                    <option value="silver">فضي راقي 💎</option>
-                    <option value="rose-gold">ذهب وردي 🌹</option>
-                    <option value="bronze">برونزي 🥉</option>
-                    <option value="gradient-gold">تدرج ذهبي مذهب 🏆</option>
-                    <option value="gradient-silver">تدرج فضي لامع ⭐</option>
-                    <option value="gradient-rainbow">تدرج قوس قزح 🌈</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="shadowType">نوع الظل:</label>
-                <select id="shadowType">
-                    <option value="outer">ظل خارجي (عادي)</option>
-                    <option value="inner">ظل داخلي (محفور)</option>
-                    <option value="both">ظل مزدوج (داخلي وخارجي)</option>
-                    <option value="none">بدون ظل</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="shadowIntensity">شدة الظل:</label>
-                <input type="range" id="shadowIntensity" min="0" max="10" value="4" style="width: 100%;">
-                <small style="color: #718096; margin-top: 5px; display: block;">التحكم في قوة الظل (<span id="shadowIntensityValue">4</span>)</small>
-            </div>
-
-            <div class="form-group">
-                <label for="coupleNamesFont">خط أسماء العروسين:</label>
-                <select id="coupleNamesFont">
-                    <option value="same">نفس خط البطاقة</option>
-                    <optgroup label="✍️ خطوط الرقعة">
-                        <option value="Aref Ruqaa">عارف رقعة - رقعة كلاسيكي</option>
-                        <option value="Aref Ruqaa Ink">عارف رقعة حبري - رقعة بقلم حبر</option>
-                    </optgroup>
-                    <optgroup label="🎨 خطوط ديوانية وزخرفية">
-                        <option value="Rakkas">رقاص - ديواني زخرفي فاخر</option>
-                        <option value="Katibeh">كاتبة - ديواني راقي</option>
-                        <option value="Mirza">ميرزا - نستعليق ديواني</option>
-                    </optgroup>
-                    <optgroup label="📖 خطوط نسخ تقليدية">
-                        <option value="Scheherazade New">شهرزاد - نسخ ديواني</option>
-                        <option value="Amiri">أميري - نسخ تقليدي</option>
-                    </optgroup>
-                    <optgroup label="💎 خطوط كوفية">
-                        <option value="Reem Kufi">ريم كوفي - كوفي هندسي</option>
-                    </optgroup>
-                    <optgroup label="🌟 خطوط عصرية">
-                        <option value="Almarai">المرعي - عصري واضح</option>
-                        <option value="Cairo">القاهرة - حديث أنيق</option>
-                        <option value="Tajawal">تجوال - عصري</option>
-                        <option value="Mada">مدى - بسيط</option>
-                        <option value="Harmattan">هرماتان - نظيف</option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="frameColor">لون الإطار:</label>
-                <input type="color" id="frameColor" class="color-input" value="#ffffff">
-            </div>
-
-            <div class="form-group">
-                <label for="frameOpacity">شفافية الإطار:</label>
-                <input type="range" id="frameOpacity" min="0" max="100" value="30" style="width: 100%;">
-                <small style="color: #718096; margin-top: 5px; display: block;">تحكم في وضوح الإطار الزخرفي (<span id="frameOpacityValue">30</span>%)</small>
-            </div>
-
-            <div class="form-group">
-                <label for="frameMargin">هوامش الإطار:</label>
-                <input type="range" id="frameMargin" min="10" max="80" value="30" style="width: 100%;">
-                <small style="color: #718096; margin-top: 5px; display: block;">المسافة من حواف البطاقة (<span id="frameMarginValue">30</span>px)</small>
-            </div>
-
-            <div class="form-group">
-                <label for="showFrame">عرض الإطار:</label>
-                <select id="showFrame">
-                    <option value="both">الإطار المزدوج</option>
-                    <option value="outer">الإطار الخارجي فقط</option>
-                    <option value="inner">الإطار الداخلي فقط</option>
-                    <option value="none">بدون إطار</option>
-                </select>
-            </div>
+          <div class="mt-3 text-muted small">
+            <strong>ملاحظة:</strong> سيتم التقاط القسم الموجود داخل "المعاينة" وحفظه صورة. لتحسين الدقة: افتح في متصفح على سطح المكتب.
+          </div>
         </div>
+      </div>
 
-        <!-- لوحة المعاينة -->
-        <div class="preview-panel">
-            <div class="invitation-card card-portrait" id="invitationCard">
-                <div class="card-overlay" id="cardOverlay"></div>
-                <div class="card-background"></div>
-                <div class="card-content" id="cardContent">
-                    <div class="invitation-title" id="displayTitle">دعوة زواج</div>
-                    <div class="couple-names" id="displayNames">فاطمة & أحمد</div>
-                    
-                    <!-- التصميم الجديد للتاريخ والمكان -->
-                    <div class="date-venue-container">
-                        <div class="wedding-date" id="displayDate">الجمعة ١٥ ديسمبر ٢٠٢٤</div>
-                        <div class="separator"></div>
-                        <div class="venue-info" id="displayVenue">قاعة الأحلام الذهبية<br>شارع الملك فهد - الرياض<br>الساعة ٧:٠٠ مساءً</div>
-                    </div>
-                    
-                    <div class="additional-text" id="displayAdditional">وبحضوركم يتم لنا الفرح والسرور</div>
-                </div>
-                <div class="decorative-frame" id="decorativeFrame"></div>
+      <div class="col-md-7 d-flex align-items-center justify-content-center">
+        <div id="preview" class="card-preview" aria-label="معاينة الدعوة">
+          <!-- Ornaments (simple SVG shapes) -->
+          <svg class="ornament top-left" viewBox="0 0 100 100"><path d="M10 10 C40 0 60 0 90 10 L90 90 C60 100 40 100 10 90 Z" stroke="#c9b08a" fill="rgba(0,0,0,0)"/></svg>
+          <svg class="ornament top-right" viewBox="0 0 100 100"><path d="M10 10 C40 0 60 0 90 10 L90 90 C60 100 40 100 10 90 Z" stroke="#c9b08a" fill="rgba(0,0,0,0)"/></svg>
+          <svg class="ornament bottom-left" viewBox="0 0 100 100"><path d="M10 10 C40 0 60 0 90 10 L90 90 C60 100 40 100 10 90 Z" stroke="#c9b08a" fill="rgba(0,0,0,0)"/></svg>
+          <svg class="ornament bottom-right" viewBox="0 0 100 100"><path d="M10 10 C40 0 60 0 90 10 L90 90 C60 100 40 100 10 90 Z" stroke="#c9b08a" fill="rgba(0,0,0,0)"/></svg>
+
+          <div class="center-block inv-text">
+            <div id="titleText" class="inv-title">يتشرف</div>
+            <div id="nameText" class="inv-name">مطلو بن نايف الشقور</div>
+            <div id="bodyText" class="inv-body">دعوتكم لحضور حفل زواج الابن / المهندس</div>
+
+            <div id="allahText" style="font-family: 'Amiri', serif; font-size:36px; margin-top:8px; opacity:0.95;">عبدالله</div>
+
+            <div id="timeText" class="inv-meta">مساء يوم الخميس</div>
+
+            <div style="margin-top:22px; font-size:13px; opacity:0.9;">
+              <div id="placeText">قاعة الفخامة – المجمعة</div>
+              <div id="dateText" style="margin-top:6px;">١٤٤٦/٥/١٢ هـ - ١٤/١١/٢٠٢٤ م</div>
             </div>
-            
-            <div class="controls">
-                <button class="btn btn-primary" onclick="previewFullscreen()">معاينة كاملة</button>
-                <button class="btn btn-secondary" onclick="downloadInvitation()">تحميل الدعوة</button>
-                <button class="btn btn-warning" onclick="printInvitation()">طباعة الدعوة</button>
-                <button class="btn btn-success" onclick="shareWhatsApp()">مشاركة واتساب</button>
-            </div>
+
+            <div style="margin-top:28px; font-size:12px; opacity:0.85;">شاكرين لكم تلبية الدعوة</div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+<script>
+  // elements
+  const inputTitle = document.getElementById('inputTitle');
+  const inputName = document.getElementById('inputName');
+  const inputPlace = document.getElementById('inputPlace');
+  const inputDate = document.getElementById('inputDate');
+  const inputTime = document.getElementById('inputTime');
+  const bgUpload = document.getElementById('bgUpload');
+  const bgColor = document.getElementById('bgColor');
+
+  const titleText = document.getElementById('titleText');
+  const nameText = document.getElementById('nameText');
+  const bodyText = document.getElementById('bodyText');
+  const placeText = document.getElementById('placeText');
+  const dateText = document.getElementById('dateText');
+  const timeText = document.getElementById('timeText');
+  const preview = document.getElementById('preview');
+  const allahText = document.getElementById('allahText');
+
+  // live update function
+  function updatePreview() {
+    titleText.textContent = inputTitle.value || ' ';
+    nameText.textContent = inputName.value || ' ';
+    bodyText.textContent = 'دعوتكم لحضور حفل زواج الابن / المهندس';
+    placeText.textContent = inputPlace.value || ' ';
+    dateText.textContent = inputDate.value || ' ';
+    timeText.textContent = inputTime.value || ' ';
+  }
+
+  // initial
+  updatePreview();
+
+  // events
+  [inputTitle, inputName, inputPlace, inputDate, inputTime].forEach(el => {
+    el.addEventListener('input', updatePreview);
+  });
+
+  // background image upload
+  bgUpload.addEventListener('change', function(e){
+    const f = e.target.files && e.target.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      preview.style.backgroundImage = `url(${ev.target.result})`;
+    };
+    reader.readAsDataURL(f);
+  });
+
+  // background color change (removes bg image)
+  bgColor.addEventListener('input', function(){
+    preview.style.backgroundImage = '';
+    preview.style.backgroundColor = bgColor.value || '#222';
+  });
+
+  // reset button
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    inputTitle.value = 'يتشرف';
+    inputName.value = 'مطلو بن نايف الشقور';
+    inputPlace.value = 'قاعة الفخامة – المجمعة';
+    inputDate.value = '١٤٤٦/٥/١٢ هـ - ١٤/١١/٢٠٢٤ م';
+    inputTime.value = 'مساء يوم الخميس';
+    bgUpload.value = '';
+    bgColor.value = '#222222';
+    preview.style.backgroundImage = '';
+    preview.style.backgroundColor = '#222';
+    updatePreview();
+  });
+
+  // download as PNG using html2canvas
+  document.getElementById('downloadBtn').addEventListener('click', function(){
+    // temporarily increase scale to get higher resolution image
+    const scale = 2.2; // تعديل يمكن رفعه لزيادة الجودة (حجم الملف يزيد)
+    // set background color if none
+    const origBg = preview.style.backgroundColor || '#222';
+    html2canvas(preview, {
+      scale: scale,
+      backgroundColor: null, // keep background as visible
+      useCORS: true,
+      allowTaint: true,
+      logging: false
+    }).then(canvas => {
+      // create a download link
+      canvas.toBlob(function(blob){
+        const link = document.createElement('a');
+        link.download = `invitation_${(new Date()).toISOString().slice(0,10)}.png`;
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }, 'image/png');
+    }).catch(err => {
+      alert('حدث خطأ أثناء إنشاء الصورة. جرب فتح الصفحة في متصفح آخر أو تقليل قيمة الجودة (scale).');
+      console.error(err);
+    });
+  });
+
+  // make sure initial background color matches input
+  preview.style.backgroundColor = bgColor.value;
+</script>
 </body>
 </html>
