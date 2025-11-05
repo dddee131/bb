@@ -22,6 +22,7 @@
             align-items: center;
             justify-content: center;
             padding: 15px;
+            color: #fff;
         }
 
         .invitation-card {
@@ -52,77 +53,64 @@
             z-index: 1;
         }
 
-        .groom-image {
-            width: 150px;
-            height: 150px;
+        .groom-image-container {
+            width: 180px;
+            height: 180px;
             margin: 0 auto 25px;
             position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
-        .groom-image img {
+        .groom-image-container:hover {
+            transform: scale(1.03);
+        }
+
+        .groom-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.9);
+            display: block;
         }
 
-        .groom-silhouette {
+        .upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            opacity: 0;
+            transition: opacity 0.3s ease;
             border-radius: 10px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .shemagh {
-            position: absolute;
-            top: -10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120%;
-            height: 60%;
-            background: repeating-linear-gradient(
-                45deg,
-                #c41e3a,
-                #c41e3a 8px,
-                #ffffff 8px,
-                #ffffff 16px
-            );
-            border-radius: 50% 50% 0 0;
+        .groom-image-container:hover .upload-overlay {
+            opacity: 1;
         }
 
-        .shemagh::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            right: 0;
-            height: 30px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent);
+        .upload-overlay i {
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
 
-        .thobe {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            height: 65%;
-            background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%);
-            border-radius: 10px 10px 0 0;
+        .upload-text {
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0 10px;
         }
 
-        .bisht {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            height: 70%;
-            background: linear-gradient(180deg, rgba(139,90,43,0.9) 0%, rgba(101,67,33,0.95) 100%);
-            clip-path: polygon(15% 0, 85% 0, 100% 100%, 0% 100%);
-            border-top: 2px solid #d4af37;
+        .upload-input {
+            display: none;
         }
 
         .main-title {
@@ -274,9 +262,9 @@
                 padding: 25px 15px;
             }
             
-            .groom-image {
-                width: 120px;
-                height: 120px;
+            .groom-image-container {
+                width: 150px;
+                height: 150px;
                 margin-bottom: 20px;
             }
             
@@ -340,6 +328,14 @@
                 width: 150px;
                 margin: 12px auto;
             }
+            
+            .upload-overlay i {
+                font-size: 1.5rem;
+            }
+            
+            .upload-text {
+                font-size: 0.8rem;
+            }
         }
 
         @media (max-width: 400px) {
@@ -360,6 +356,11 @@
                 min-width: auto;
                 width: 100%;
             }
+            
+            .groom-image-container {
+                width: 130px;
+                height: 130px;
+            }
         }
 
         .ornament {
@@ -368,18 +369,37 @@
             text-align: center;
             margin: 8px 0;
         }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(212, 175, 55, 0.9);
+            color: #1a1a1a;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body>
     <div class="invitation-card">
         <div class="card-content">
-            <!-- صورة العريس -->
-            <div class="groom-image">
-                <div class="groom-silhouette">
-                    <div class="shemagh"></div>
-                    <div class="bisht"></div>
-                    <div class="thobe"></div>
+            <!-- صورة العريس مع إمكانية الرفع -->
+            <div class="groom-image-container" id="imageContainer">
+                <div class="upload-overlay">
+                    <i class="fas fa-camera"></i>
+                    <div class="upload-text">انقر لرفع صورتك</div>
                 </div>
+                <input type="file" id="imageUpload" class="upload-input" accept="image/*">
             </div>
 
             <!-- العنوان الرئيسي -->
@@ -442,9 +462,10 @@
         </div>
     </div>
 
+    <div class="notification" id="notification">تم رفع الصورة بنجاح!</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // يمكنك إضافة تأثيرات إضافية هنا
         document.addEventListener('DOMContentLoaded', function() {
             // تأثير لمعان للعناوين الذهبية
             const goldenElements = document.querySelectorAll('.main-title, .groom-name, .quranic-verse');
@@ -457,6 +478,47 @@
                     }, 1000);
                 });
             }, 3000);
+            
+            // إضافة وظيفة رفع الصورة
+            const imageContainer = document.getElementById('imageContainer');
+            const imageUpload = document.getElementById('imageUpload');
+            const notification = document.getElementById('notification');
+            
+            imageContainer.addEventListener('click', function() {
+                imageUpload.click();
+            });
+            
+            imageUpload.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        // إزالة الطبقة العلوية إذا كانت موجودة
+                        const existingOverlay = imageContainer.querySelector('.upload-overlay');
+                        if (existingOverlay) {
+                            existingOverlay.style.display = 'none';
+                        }
+                        
+                        // إنشاء عنصر الصورة إذا لم يكن موجوداً
+                        let img = imageContainer.querySelector('.groom-image');
+                        if (!img) {
+                            img = document.createElement('img');
+                            img.className = 'groom-image';
+                            imageContainer.appendChild(img);
+                        }
+                        
+                        img.src = event.target.result;
+                        
+                        // إظهار الإشعار
+                        notification.classList.add('show');
+                        setTimeout(() => {
+                            notification.classList.remove('show');
+                        }, 3000);
+                    };
+                    
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
         });
     </script>
 </body>
