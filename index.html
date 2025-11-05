@@ -21,7 +21,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
         }
 
         .invitation-card {
@@ -30,7 +30,7 @@
             width: 100%;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
             position: relative;
         }
 
@@ -47,15 +47,15 @@
         }
 
         .card-content {
-            padding: 40px 30px;
+            padding: 30px 20px;
             position: relative;
             z-index: 1;
         }
 
         .groom-image {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 30px;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px;
             position: relative;
         }
 
@@ -126,10 +126,10 @@
         }
 
         .main-title {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             color: #d4af37;
             text-align: center;
-            margin: 30px 0 20px;
+            margin: 25px 0 15px;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             font-family: 'Amiri', serif;
@@ -138,10 +138,10 @@
         .quranic-verse {
             color: #d4af37;
             text-align: center;
-            font-size: 1.4rem;
-            line-height: 2.2;
-            margin: 20px 0;
-            padding: 15px;
+            font-size: 1.2rem;
+            line-height: 2;
+            margin: 15px 0;
+            padding: 12px;
             background: rgba(212, 175, 55, 0.1);
             border-radius: 10px;
             font-weight: 400;
@@ -150,17 +150,17 @@
         .invitation-text {
             color: #ffffff;
             text-align: center;
-            font-size: 1.2rem;
-            line-height: 1.9;
-            margin: 25px 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 20px 0;
             font-family: 'Cairo', sans-serif;
         }
 
         .groom-name {
-            font-size: 4rem;
+            font-size: 3.2rem;
             color: #d4af37;
             text-align: center;
-            margin: 30px 0;
+            margin: 25px 0;
             font-weight: 700;
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
             font-family: 'Amiri', serif;
@@ -171,36 +171,38 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin: 35px 0;
+            margin: 30px 0;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
         }
 
         .detail-item {
             text-align: center;
             color: #ffffff;
+            flex: 1;
+            min-width: 120px;
         }
 
         .detail-item i {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: #d4af37;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: block;
         }
 
         .detail-item .date,
         .detail-item .location {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 1.5;
             font-family: 'Cairo', sans-serif;
         }
 
         .qr-code {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             background: white;
             margin: 0 auto;
-            padding: 10px;
+            padding: 8px;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -215,25 +217,25 @@
         .closing-text {
             color: #d4af37;
             text-align: center;
-            font-size: 1.5rem;
-            margin: 30px 0 20px;
-            line-height: 2;
+            font-size: 1.3rem;
+            margin: 25px 0 15px;
+            line-height: 1.8;
             font-weight: 400;
         }
 
         .host-name {
             color: #ffffff;
             text-align: center;
-            font-size: 1.3rem;
-            margin-top: 15px;
+            font-size: 1.1rem;
+            margin-top: 12px;
             font-family: 'Cairo', sans-serif;
         }
 
         .decorative-line {
-            width: 200px;
+            width: 180px;
             height: 2px;
             background: linear-gradient(90deg, transparent, #d4af37, transparent);
-            margin: 20px auto;
+            margin: 15px auto;
         }
 
         @keyframes fadeIn {
@@ -262,29 +264,109 @@
         .card-content > *:nth-child(8) { animation-delay: 0.8s; }
         .card-content > *:nth-child(9) { animation-delay: 0.9s; }
 
+        /* تحسينات خاصة للشاشات الصغيرة جداً */
         @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .card-content {
+                padding: 25px 15px;
+            }
+            
+            .groom-image {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 20px;
+            }
+            
             .main-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                margin: 20px 0 12px;
             }
             
             .groom-name {
-                font-size: 3rem;
+                font-size: 2.5rem;
+                margin: 20px 0;
             }
             
             .quranic-verse {
-                font-size: 1.1rem;
+                font-size: 1rem;
+                line-height: 1.8;
+                padding: 10px;
+                margin: 12px 0;
             }
             
             .invitation-text {
                 font-size: 1rem;
+                margin: 15px 0;
+            }
+            
+            .event-details {
+                margin: 25px 0;
+                gap: 12px;
+            }
+            
+            .detail-item {
+                min-width: 100px;
+            }
+            
+            .detail-item i {
+                font-size: 1.5rem;
+                margin-bottom: 6px;
+            }
+            
+            .detail-item .date,
+            .detail-item .location {
+                font-size: 0.9rem;
+            }
+            
+            .qr-code {
+                width: 80px;
+                height: 80px;
+                padding: 6px;
+            }
+            
+            .closing-text {
+                font-size: 1.1rem;
+                margin: 20px 0 12px;
+            }
+            
+            .host-name {
+                font-size: 1rem;
+            }
+            
+            .decorative-line {
+                width: 150px;
+                margin: 12px auto;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .main-title {
+                font-size: 1.8rem;
+            }
+            
+            .groom-name {
+                font-size: 2rem;
+            }
+            
+            .event-details {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .detail-item {
+                min-width: auto;
+                width: 100%;
             }
         }
 
         .ornament {
             color: #d4af37;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             text-align: center;
-            margin: 10px 0;
+            margin: 8px 0;
         }
     </style>
 </head>
